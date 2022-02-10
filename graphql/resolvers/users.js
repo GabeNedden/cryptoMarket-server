@@ -23,7 +23,7 @@ module.exports = {
         async getUser(_, { input }){
             try{
                 const users = await User.find();
-                let user = users.find(user => user.username == input || user.email == input);
+                let user = users.find(user => user.id == input || user.username == input || user.email == input );
                 if(user){
                     return user;
                 } else {
