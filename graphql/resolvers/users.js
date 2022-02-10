@@ -116,7 +116,10 @@ module.exports = {
                 username,
                 password,
                 createdAt: new Date().toISOString(),
-                role: "Default"
+                role: "Default",
+                portfolio: [{name: "Bitcoin", quantity: 1}],
+                value: username,
+                label: username,
             });
 
             const res = await newUser.save();

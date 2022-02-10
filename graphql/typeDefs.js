@@ -6,7 +6,15 @@ module.exports = gql`
         email: String
         token: String
         username: String
+        portfolio: [Stock]
         createdAt: String
+        value: String
+        label: String
+    }
+    type Stock {
+        id: ID
+        name: String
+        quantity: Float
     }
     input RegisterInput {
         username: String!
