@@ -118,7 +118,7 @@ module.exports = {
                 createdAt: new Date().toISOString(),
                 role: "Default",
                 cash: 50000,
-                portfolio: [{name: "Bitcoin", symbol: 'BTC', quantity: 1, averagePrice: 0}],
+                portfolio: [{name: "Bitcoin", symbol: 'BTC', quantity: 1, averagePrice: 42000}],
                 value: username,
                 label: username,
             });

@@ -11,8 +11,9 @@ const userSchema = new Schema({
     cash: Number,
     portfolio: [{
         name: String,
+        symbol: String,
         quantity: Number,
-        purchasePrice: Number,
+        averagePrice: Number,
         purchaseWhen: String
     }],
 });
