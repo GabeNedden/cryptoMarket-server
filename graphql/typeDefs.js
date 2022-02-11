@@ -6,6 +6,7 @@ module.exports = gql`
         email: String
         token: String
         username: String
+        cash: Float
         portfolio: [Stock]
         createdAt: String
         value: String
@@ -14,7 +15,9 @@ module.exports = gql`
     type Stock {
         id: ID
         name: String
+        symbol: String
         quantity: Float
+        averagePrice: Float
     }
     input RegisterInput {
         username: String!

@@ -117,7 +117,8 @@ module.exports = {
                 password,
                 createdAt: new Date().toISOString(),
                 role: "Default",
-                portfolio: [{name: "Bitcoin", quantity: 1}],
+                cash: 50000,
+                portfolio: [{name: "Bitcoin", symbol: 'BTC', quantity: 1, averagePrice: 0}],
                 value: username,
                 label: username,
             });

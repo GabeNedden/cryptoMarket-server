@@ -8,6 +8,7 @@ const userSchema = new Schema({
     role: String,
     value: String,
     label: String,
+    cash: Number,
     portfolio: [{
         name: String,
         quantity: Number,
