@@ -20,6 +20,14 @@ module.exports = gql`
         averagePrice: String
         purchaseWhen: String
     }
+    input StockInput {
+        id: ID
+        name: String
+        symbol: String
+        quantity: String
+        averagePrice: String
+        purchaseWhen: String
+    }
     input RegisterInput {
         username: String!
         password: String!
@@ -33,5 +41,6 @@ module.exports = gql`
     type Mutation {
         register(registerInput: RegisterInput): User!
         login(username: String! password: String!): User!
+        updatePortfolio(userId: ID! portfolio: [StockInput]): User!
     }
 `;

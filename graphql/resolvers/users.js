@@ -2,6 +2,8 @@ const bcrypt             = require('bcryptjs');
 const jwt                = require('jsonwebtoken');
 const { UserInputError } = require('apollo-server');
 
+const checkAuth = require('../../utilities/check-auth');
+
 const { validateRegisterInput, validateLoginInput } = require('../../utilities/validators');
 
 const User                      = require('../models/User');
@@ -45,6 +47,24 @@ module.exports = {
     },
 
     Mutation: {
+        async updatePortfolio(_, { userId, portfolio }, context){
+            const user = checkAuth(context);
+
+            try{
+                const userData = await User.findById(userId);
+                if(userId === user.id){
+                    userData.portfolio = portfolio;
+
+                    await userData.save()
+                    return userData;
+                } else {
+                    throw new UserInputError('User does not exist');
+                }
+            } catch(err){
+                throw new Error(err);
+            }
+        },
+
         async login(_, { username, password }){
             const {errors, valid} = validateLoginInput(username, password);
 
