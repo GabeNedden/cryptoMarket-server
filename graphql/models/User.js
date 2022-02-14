@@ -1,4 +1,4 @@
-const { model, Schema } = require('mongoose');
+const { model, Schema, Mongoose } = require('mongoose');
 
 const userSchema = new Schema({
     username: String,
@@ -8,12 +8,12 @@ const userSchema = new Schema({
     role: String,
     value: String,
     label: String,
-    cash: Number,
+    cash: String,
     portfolio: [{
         name: String,
         symbol: String,
-        quantity: Number,
-        averagePrice: Number,
+        quantity: String,
+        averagePrice: String,
         purchaseWhen: String
     }],
 });
