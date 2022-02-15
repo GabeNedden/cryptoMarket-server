@@ -41,6 +41,6 @@ module.exports = gql`
     type Mutation {
         register(registerInput: RegisterInput): User!
         login(username: String! password: String!): User!
-        updatePortfolio(userId: ID! portfolio: [StockInput]): User!
+        updatePortfolio(userId: ID! cash: String stockInput: StockInput): User!
     }
 `;

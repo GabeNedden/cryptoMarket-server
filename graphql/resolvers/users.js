@@ -47,14 +47,29 @@ module.exports = {
     },
 
     Mutation: {
-        async updatePortfolio(_, { userId, portfolio }, context){
-            const user = checkAuth(context);
+        async updatePortfolio(_, { userId, cash, stockInput: {name, symbol, quantity, averagePrice} }, context){
 
             try{
                 const userData = await User.findById(userId);
-                if(userId === user.id){
-                    userData.portfolio = portfolio;
+                if(userData){
 
+                    const stockIndex = userData.portfolio.findIndex((s) => s.name === name);
+                    if(stockIndex == -1){
+                        userData.portfolio.unshift({
+                            name,
+                            symbol,
+                            quantity,
+                            averagePrice
+                        })
+                    } else {
+                        stock = userData.portfolio[stockIndex]
+                        stock.name = name;
+                        stock.symbol = symbol;
+                        stock.quantity = quantity;
+                        stock.averagePrice = averagePrice;
+                    }
+                    userData.cash = cash;
+                
                     await userData.save()
                     return userData;
                 } else {
