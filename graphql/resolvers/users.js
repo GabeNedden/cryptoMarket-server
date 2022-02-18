@@ -47,31 +47,50 @@ module.exports = {
     },
 
     Mutation: {
-        async updatePortfolio(_, { userId, cash, stockInput: {name, symbol, quantity, averagePrice} }, context){
+        async updatePortfolio(_, { userId, stockInput: {action, name, symbol, quantity, price} }, context){
+
+            quantity = parseFloat(quantity);
+            price = parseFloat(price);
 
             try{
-                const userData = await User.findById(userId);
-                if(userData){
+                const userDocument = await User.findById(userId);
+                if(userDocument){
 
-                    const stockIndex = userData.portfolio.findIndex((s) => s.name === name);
+                    const stockIndex = userDocument.portfolio.findIndex((s) => s.name === name);
+                    const cost = price * quantity;
+
                     if(stockIndex == -1){
-                        userData.portfolio.unshift({
-                            name,
-                            symbol,
-                            quantity,
-                            averagePrice
-                        })
+                        // Adding New Stock to Portfolio
+                        if(action === 'Buy' && parseFloat(userDocument.cash) >= cost){
+                            userDocument.portfolio.unshift({
+                                name,
+                                symbol,
+                                quantity,
+                                averagePrice: price
+                            })
+                            userDocument.cash = parseFloat(userDocument.cash) - cost;
+
+                        } else if(action === 'Sell'){
+                            throw new UserInputError("Stock not found in Portfolio");
+                        }
+                        
                     } else {
-                        stock = userData.portfolio[stockIndex]
-                        stock.name = name;
-                        stock.symbol = symbol;
-                        stock.quantity = quantity;
-                        stock.averagePrice = averagePrice;
+                        // Updating Existing Stock in Portfolio
+                        stock = userDocument.portfolio[stockIndex]
+
+                        if(action === 'Buy' && parseFloat(userDocument.cash) >= cost){
+                            stock.averagePrice = ((parseFloat(stock.quantity) * parseFloat(stock.averagePrice)) + cost) / (parseFloat(quantity) + parseFloat(stock.quantity));
+                            stock.quantity = parseFloat(stock.quantity) + quantity;
+                            userDocument.cash = parseFloat(userDocument.cash) - cost;
+
+                        } else if(action === 'Sell'){
+                            stock.quantity = parseFloat(stock.quantity) - quantity;
+                            userDocument.cash = parseFloat(userDocument.cash) + cost;
+                        };
                     }
-                    userData.cash = cash;
                 
-                    await userData.save()
-                    return userData;
+                    await userDocument.save()
+                    return userDocument;
                 } else {
                     throw new UserInputError('User does not exist');
                 }

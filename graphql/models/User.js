@@ -14,7 +14,6 @@ const userSchema = new Schema({
         symbol: String,
         quantity: String,
         averagePrice: String,
-        purchaseWhen: String
     }],
 });
 
