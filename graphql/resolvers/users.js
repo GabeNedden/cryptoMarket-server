@@ -61,7 +61,10 @@ module.exports = {
 
                     if(stockIndex == -1){
                         // Adding New Stock to Portfolio
-                        if(action === 'Buy' && parseFloat(userDocument.cash) >= cost){
+                        if(action === 'Buy'){
+                            if(parseFloat(userDocument.cash) < cost){
+                                throw new UserInputError("You lack the funds for this transaction");
+                            }
                             userDocument.portfolio.unshift({
                                 name,
                                 symbol,
@@ -78,7 +81,10 @@ module.exports = {
                         // Updating Existing Stock in Portfolio
                         stock = userDocument.portfolio[stockIndex]
 
-                        if(action === 'Buy' && parseFloat(userDocument.cash) >= cost){
+                        if(action === 'Buy'){
+                            if(parseFloat(userDocument.cash) < cost){
+                                throw new UserInputError("You lack the funds for this transaction");
+                            }
                             stock.averagePrice = ((parseFloat(stock.quantity) * parseFloat(stock.averagePrice)) + cost) / (parseFloat(quantity) + parseFloat(stock.quantity));
                             stock.quantity = parseFloat(stock.quantity) + quantity;
                             userDocument.cash = parseFloat(userDocument.cash) - cost;
